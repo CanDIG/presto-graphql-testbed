@@ -1,5 +1,13 @@
 version: "2"
 services:
+  mongo:
+    container_name: local_mongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+
   app:
     container_name: graphqlapp
     restart: always
@@ -11,14 +19,6 @@ services:
     depends_on:
       - mongo
 
-  mongo:
-    container_name: local_mongo
-    image: mongo
-    volumes:
-      - ./data:/data/db
-    ports:
-      - "27017:27017"
-
   admin-mongo:
     image: 0x59/admin-mongo:latest
     ports:
@@ -27,6 +27,18 @@ services:
       - PORT=8082
       - CONN_NAME=mongo
       - DB_HOST=mongo
+    depends_on:
+      - mongo
+    links:
+      - mongo
+
+  fhir:
+    container_name: gofhir
+    build: ./gofhir
+    command: -mongohost mongo
+    restart: always
+    ports:
+      - "3001:3001"
     depends_on:
       - mongo
     links:
