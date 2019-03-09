@@ -1,5 +1,6 @@
-# NodeJsGraphQLDockerApp
-Simple crud App made with nodeJs and GraphQL under docker container
+# FHIR/CanvasDB testbed
+
+Borrows heavily in the beinning from https://github.com/medaymenTN/NodeJsGraphQLDockerApp
 
 ## Requirments 
 
@@ -18,8 +19,3 @@ you should have docker and docker-compose installed on your machine
  
  * add a random name to your connection and in the field connection string put the following connection string 
  (mongodb://mongo/myappdb)
- 
- 
-
-
-
