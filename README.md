@@ -11,7 +11,7 @@ you should have docker and docker-compose installed on your machine
 * clone the project from the repo 
 * cd -> project directory and run your project using the following command 
  ```
- $ docker-compose up 
+docker-compose up 
  ```
  your node js project will run on http://localhost:4000/graphql
  
@@ -19,3 +19,13 @@ you should have docker and docker-compose installed on your machine
  
  * add a random name to your connection and in the field connection string put the following connection string 
  (mongodb://mongo/myappdb)
+
+```
+cd data/ingest
+tar -xzvf mongo_fhir_dump.tgz
+mongorestore dump
+```
+
+curl "http://localhost:3001/Patient?_count=3" | jq
+
+curl "http://localhost:3001/Patient?_has:Procedure:patient:code=112790001" | jq
