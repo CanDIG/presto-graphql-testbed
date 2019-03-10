@@ -1,12 +1,22 @@
-version: "2"
+version: "3"
 services:
   mongo:
     container_name: local_mongo
     image: mongo
     volumes:
-      - ./data:/data/db
+      - ./data/mongodb:/data/db
     ports:
       - "27017:27017"
+
+  mysql:
+    container_name: local_mysql
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD="root_password"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
 
   app:
     container_name: graphqlapp
@@ -16,8 +26,10 @@ services:
       - "4000:4000"
     links:
       - mongo
+      - mysql
     depends_on:
       - mongo
+      - mysql
 
   admin-mongo:
     image: 0x59/admin-mongo:latest
@@ -35,7 +47,7 @@ services:
   fhir:
     container_name: gofhir
     build: ./gofhir
-    command: -mongohost mongo
+    command: -db.host mongo
     restart: always
     ports:
       - "3001:3001"
