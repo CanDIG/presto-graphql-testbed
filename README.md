@@ -48,3 +48,32 @@ curl "http://localhost:3001/Patient?_has:Procedure:patient:code=112790001" | jq
 You can take a closer look at the MongoDB with the admin-mongo interface displayed on http://localhost:8082/.
 Create a connection to `mongodb://mongo/fhir` with any name, then start the connection and examine the collections.
 
+To load the variant data into the database, first grant access to the `dbuser` user to connect from outside the container:
+
+```
+mysql -h 127.0.0.1 -uroot -prootpass -P 3306
+GRANT ALL PRIVILEGES ON VAR_DB.* to 'dbuser'@'%';
+^D
+```
+
+then uncompress the mysql dump of the variant data:
+```
+gunzip mysql_var_dump.gz
+```
+
+Then log in as `dbuser` and ingest the dump of the variant database:
+```
+mysql -h 127.0.0.1 -udbuser -puserpass var_db < mysql_var_dump
+```
+
+Now you can check to make sure the table has been loaded:
+```
+select count(*) from variants;
+# +----------+
+# | count(*) |
+# +----------+
+# |    19997 |
+# +----------+
+# 1 row in set (0.62 sec)
+```
+
