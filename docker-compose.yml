@@ -10,13 +10,18 @@ services:
 
   mysql:
     container_name: local_mysql
-    image: mysql:latest
+    image: mysql/mysql-server:latest
     environment:
-      - MYSQL_ROOT_PASSWORD="root_password"
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_DATABASE=var_db
+      - MYSQL_USER=dbuser
+      - MYSQL_PASSWORD=userpass
     volumes:
       - ./data/mysql:/var/lib/mysql
     ports:
       - "3306:3306"
+      - "33060:33060"
 
   app:
     container_name: graphqlapp
