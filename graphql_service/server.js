@@ -3,7 +3,8 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose');
 const graphqlExpress = require("express-graphql");
-const bookSchema = require('./graphql/BookSchema').BookSchema;
+
+var schema = require('./graphql')
 
 var connectWithRetry = function() {
   return mongoose.connect('mongodb://mongo/fhir', function(err) {
@@ -21,7 +22,7 @@ app.listen(app.get('port'),  () =>{
 });
 
 app.use('/graphql', graphqlExpress({
-    schema: bookSchema,
+    schema: schema,
     rootValue: global,
     graphiql: true
 }));
