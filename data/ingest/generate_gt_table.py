@@ -95,12 +95,24 @@ def populate_call_table(connection):
 
     valid_set = set([HET_ALT, HOM_ALT])
 
+    entries = []
+    batch_size = 25000
+    tot = 0
     for variant_id, gts, in samples_variants_cursor:
         full_gts = snappy_unpack_blob(gts)
         for (sample_id, gt) in zip(sample_ids, full_gts):
             if gt in valid_set:
-                calls_cursor.execute(add_call, (variant_id, sample_id))
+                entries.append((variant_id, sample_id))
+                if len(entries) >= batch_size:
+                    calls_cursor.executemany(add_call, entries)
+                    tot += len(entries)
+                    print(tot)
+                    entries = []
+                   
+    if entries:
+        calls_cursor.executemany(add_call, entries)
         
+    connection.commit()
     calls_cursor.close()
     samples_variants_cursor.close()
 
