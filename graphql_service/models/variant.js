@@ -14,7 +14,7 @@ con.connect();
 exports.find = () => {
     return new Promise(resolve => {
         var variants;
-        con.query('select variant_id, chrom, start, end, ref, alt from variants limit 5', function (error, results, fields) {
+        con.query('select variant_id, chrom, start, end, ref, alt, gene, polyphen_score, af_exac_all from variants limit 10', function (error, results, fields) {
             if (error) {
                 console.log(error);
                 throw error;

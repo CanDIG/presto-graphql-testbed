@@ -9,7 +9,7 @@ module.exports =  `
         time: String
     }
     type GeneralPractitioner {
-        reference: String
+        reference: [String]
     }
     type Patient {
         _id: String

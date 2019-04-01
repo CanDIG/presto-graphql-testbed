@@ -5,4 +5,7 @@ module.exports =  `
     extend type Immunization {
         patient: Patient
     }
+    extend type DiagnosticReport {
+        patient: Patient
+    }
 ` 

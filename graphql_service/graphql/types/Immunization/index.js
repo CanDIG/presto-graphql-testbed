@@ -3,14 +3,20 @@ module.exports =  `
         time: String
         precision: String
     }
-    type Immunization_Patient {
-        reference: String
-        referenceid: String
+    type VaccineCode {
+        text: String
+        coding: [VaccineCoding]
+    }
+    type VaccineCoding {
+        system: String
+        code: String
+        display: String
     }
     type Immunization {
         _id: String!
         date: Date
         patient_id: String!
+        vaccineCode: VaccineCode
     }
     type Query {
         immunizations: [Immunization]

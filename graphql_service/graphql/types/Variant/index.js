@@ -6,6 +6,9 @@ module.exports =  `
         end: Int
         ref: String
         alt: String
+        gene: String
+        polyphen_score: Float
+        af_exac_all: Float
     }
     type Query {
         variants: [Variant]

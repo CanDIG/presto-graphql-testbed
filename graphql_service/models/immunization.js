@@ -30,6 +30,14 @@ var ImmunizationSchema = new Schema({
             required: true
         }
 
+    },
+    vaccineCode: {
+        coding: [{
+            system: String,
+            code: String,
+            display: String
+        }],
+        text: String
     }
 
 });
