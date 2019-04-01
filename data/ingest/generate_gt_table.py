@@ -150,4 +150,4 @@ if __name__ == "__main__":
     patient_ids = get_patient_ids(mongo_client)
 
     populate_call_table(mysql_conn, patient_ids)
-    conn.close()
+    mysql_conn.close()
