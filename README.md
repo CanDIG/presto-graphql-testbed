@@ -12,7 +12,8 @@ This currently borrows heavily from https://github.com/medaymenTN/NodeJsGraphQLD
 
 You will need docker and docker-compose installed on your machine.  In addition, to add the
 test data to the services you will need local installs of mongodb and a mysql client. `jq` isn't
-necessary but makes viewing JSON responses much nicer.
+necessary but makes viewing JSON responses much nicer.  The [`snappy`](https://github.com/andrix/python-snappy)
+package is needed to parse the genotypes in the gemini-based variants DB.
 
 ## Installation 
 
@@ -21,6 +22,8 @@ necessary but makes viewing JSON responses much nicer.
  ```
 docker-compose up 
  ```
+
+### Step 1 - FHIR DB
 
 It will take a minute for the MongoDB to come up, and only after that will the front-end
 services stop restarting as they can successfully connect to Mongo.
@@ -47,6 +50,8 @@ curl "http://localhost:3001/Patient?_has:Procedure:patient:code=112790001" | jq
 
 You can take a closer look at the MongoDB with the admin-mongo interface displayed on http://localhost:8082/.
 Create a connection to `mongodb://mongo/fhir` with any name, then start the connection and examine the collections.
+
+### Step 2 - Variants DB
 
 To load the variant data into the database, first grant access to the `dbuser` user to connect from outside the container:
 
@@ -75,5 +80,16 @@ select count(*) from variants;
 # |    19997 |
 # +----------+
 # 1 row in set (0.62 sec)
+```
+
+### Step 3 - Linking the two
+
+Finally, run the script to generate the `calls` database in the variants DB which links variants called in
+a sample to a given patient ID:
+
+```
+pip3 install -r requirements.txt
+cd data/ingest
+./generate_gt_table.py
 ```
 
