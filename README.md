@@ -88,8 +88,7 @@ Finally, run the script to generate the `calls` database in the variants DB whic
 a sample to a given patient ID:
 
 ```
-pip3 install -r requirements.txt
-cd data/ingest
+pip3 install -r ../../requirements.txt
 ./generate_gt_table.py
 ```
 
