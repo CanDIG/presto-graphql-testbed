@@ -18,6 +18,6 @@ module.exports =  `
         code: DiagnosticCode
     }
     type Query {
-        diagnostic_reports: [DiagnosticReport]
+        diagnostic_reports(limit: Int = 10): [DiagnosticReport]
     }
 ` 

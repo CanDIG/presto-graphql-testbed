@@ -1,6 +1,6 @@
 module.exports =  `
     extend type Patient {
-        immunizations: [Immunization]
+        immunizations(limit: Int = 10): [Immunization]
     }
     extend type Immunization {
         patient: Patient
@@ -9,6 +9,6 @@ module.exports =  `
         patient: Patient
     }
     extend type Variant {
-        patients: [Patient]
+        patients(limit: Int = 10): [Patient]
     }
 ` 

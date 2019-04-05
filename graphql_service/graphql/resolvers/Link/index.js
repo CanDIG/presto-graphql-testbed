@@ -6,8 +6,8 @@ module.exports = {
     Patient: {
         immunizations: {
             fragment: '... on Patient { _id }',
-            resolve: async (patient) => {
-                const immunizations = await ImmunizationModel.find_by_patient_id(patient._id);
+            resolve: async (patient, args) => {
+                const immunizations = await ImmunizationModel.find_by_patient_id(patient._id, args.limit);
                 if (!immunizations) {
                     throw new Error('error while fetching data')
                 }
@@ -42,8 +42,8 @@ module.exports = {
     Variant: {
         patients: {
             fragment: '... on Variant { patient_ids }',
-            resolve: async (variant) => {
-                const patients = await PatientModel.find_by_ids(variant.patient_ids);
+            resolve: async (variant, args) => {
+                const patients = await PatientModel.find_by_ids(variant.patient_ids, args.limit);
                 if (!patients) {
                     throw new Error('error while fetching data')
                 }

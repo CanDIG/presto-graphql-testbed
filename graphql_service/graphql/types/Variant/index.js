@@ -12,6 +12,6 @@ module.exports =  `
         af_exac_all: Float
     }
     type Query {
-        variants: [Variant]
+        variants(limit: Int = 10, patient_limit: Int = 10): [Variant]
     }
 ` 

@@ -19,7 +19,7 @@ module.exports =  `
         generalPractitioner: GeneralPractitioner
     }
     type Query {
-        patients: [Patient]
-        patients_by_name(name: String!): [Patient]
+        patients(limit: Int = 10): [Patient]
+        patients_by_name(name: String!, limit: Int = 10): [Patient]
     }
 ` 

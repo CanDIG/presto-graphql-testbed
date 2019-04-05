@@ -19,7 +19,7 @@ module.exports =  `
         vaccineCode: VaccineCode
     }
     type Query {
-        immunizations: [Immunization]
-        immunizations_by_date(past_months: Int!): [Immunization]
+        immunizations(limit: Int = 10): [Immunization]
+        immunizations_by_date(past_months: Int!, limit: Int = 10): [Immunization]
     }
 ` 

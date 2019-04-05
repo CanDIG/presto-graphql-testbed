@@ -41,17 +41,17 @@ exports.find_by_id = (patient_id) => {
     return patient
 }
 
-exports.find_by_ids = (patient_id_list) => {
-    var patient = PatientModel.find({"_id" : { $in: patient_id_list }}).limit(10)
+exports.find_by_ids = (patient_id_list, limit) => {
+    var patient = PatientModel.find({"_id" : { $in: patient_id_list }}).limit(limit)
     return patient
 }
 
-exports.find_by_name = (patient_name) => {
-    var patients = PatientModel.find({ "name": { $elemMatch: { "given": args.name } } }).limit(10);
+exports.find_by_name = (patient_name, limit) => {
+    var patients = PatientModel.find({ "name": { $elemMatch: { "given": args.name } } }).limit(limit);
     return patients
 }
 
-exports.find = () => {
-    var patients = PatientModel.find().limit(10);
+exports.find = (limit) => {
+    var patients = PatientModel.find().limit(limit);
     return patients
 }

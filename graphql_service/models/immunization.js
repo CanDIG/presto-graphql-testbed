@@ -45,19 +45,19 @@ var ImmunizationSchema = new Schema({
 var ImmunizationModel = mongoose.model('immunizations', ImmunizationSchema);
 // module.exports = ImmunizationModel;
 
-exports.find = async () => {
-    var immunizations = await ImmunizationModel.find().limit(10)
+exports.find = async (limit) => {
+    var immunizations = await ImmunizationModel.find().limit(limit)
     immunizations.map(o => (o.patient_id = o.patient.referenceid));
     return immunizations
 }
 
-exports.find_by_patient_id = async (patient_id) => {
-    var immunizations = await ImmunizationModel.find({"patient.referenceid": patient_id }).limit(10)
+exports.find_by_patient_id = async (patient_id, limit) => {
+    var immunizations = await ImmunizationModel.find({"patient.referenceid": patient_id }).limit(limit)
     immunizations.map(o => (o.patient_id = o.patient.referenceid));
     return immunizations
 }
 
-exports.find_by_date = async (past_months) => {
+exports.find_by_date = async (past_months, limit) => {
     var prev_date = moment().subtract(past_months, 'month').toISOString()
     var immunizations = await ImmunizationModel.find({"date.time": {$gte : prev_date}}).limit(10)
     immunizations.map(o => (o.patient_id = o.patient.referenceid));
