@@ -34,4 +34,24 @@ var PatientSchema = new Schema({
 
 });
 var PatientModel = mongoose.model('patients', PatientSchema);
-module.exports = PatientModel;
+// module.exports = PatientModel;
+
+exports.find_by_id = (patient_id) => {
+    var patient = PatientModel.findOne({"_id": patient_id});
+    return patient
+}
+
+exports.find_by_ids = (patient_id_list) => {
+    var patient = PatientModel.find({"_id" : { $in: patient_id_list }}).limit(10)
+    return patient
+}
+
+exports.find_by_name = (patient_name) => {
+    var patients = PatientModel.find({ "name": { $elemMatch: { "given": args.name } } }).limit(10);
+    return patients
+}
+
+exports.find = () => {
+    var patients = PatientModel.find().limit(10);
+    return patients
+}

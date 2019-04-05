@@ -10,7 +10,7 @@ module.exports = {
             return patients 
         },
         patients_by_name: async (obj, args) => {
-            const patients = await PatientModel.find({ "name": { $elemMatch: { "given": args.name } } })
+            const patients = await PatientModel.find_by_name(args.name)
             if (!patients) {
                 throw new Error('error while fetching data')
             }

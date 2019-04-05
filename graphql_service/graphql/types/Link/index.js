@@ -8,4 +8,7 @@ module.exports =  `
     extend type DiagnosticReport {
         patient: Patient
     }
+    extend type Variant {
+        patients: [Patient]
+    }
 ` 

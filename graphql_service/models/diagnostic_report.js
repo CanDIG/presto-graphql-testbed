@@ -22,4 +22,10 @@ var DiagReportSchema = new Schema({
     }
 });
 var DiagReportModel = mongoose.model('diagnosticreports', DiagReportSchema);
-module.exports = DiagReportModel;
+// module.exports = DiagReportModel;
+
+exports.find = async () => {
+    var diagnostic_reports = await DiagReportModel.find().limit(10)
+    diagnostic_reports.map(o => (o.patient_id = o.subject.referenceid));
+    return diagnostic_reports
+}

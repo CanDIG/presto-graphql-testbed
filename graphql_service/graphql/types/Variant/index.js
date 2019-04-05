@@ -1,6 +1,7 @@
 module.exports =  `
     type Variant {
         variant_id: String!
+        patient_ids: [String]
         chrom: String
         start: Int
         end: Int
