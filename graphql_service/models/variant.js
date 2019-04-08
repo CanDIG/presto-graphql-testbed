@@ -28,7 +28,7 @@ exports.find = (limit, patient_limit) => {
                         if (col_name == 'patient_id') {
                             col_name = 'patient_ids'
                             // Adds a limit filter here
-                            if (!(variants[var_id][col_name] != undefined && variants[var_id][col_name].length => patient_limit))
+                            if (!(variants[var_id][col_name] != undefined && variants[var_id][col_name].length >= patient_limit))
                                 (variants[var_id][col_name] == undefined) ? variants[var_id][col_name] = [row[i]] : variants[var_id][col_name].push(row[i]);
                         } else {
                             variants[var_id][col_name] = row[i];
