@@ -36,3 +36,39 @@ can start the client by running:
 /path/to/client/presto --server localhost:8080
 ```
 
+### Testing the database connections
+Using the previous case for the MySQL database, we can run the same command
+after connecting to the presto server using the client
+
+```
+presto> select count(*) from mysql.var_db.variants;
+ _col0
+-------
+ 19997
+(1 row)
+
+Query 20190425_113636_00012_45fmg, FINISHED, 1 node
+Splits: 18 total, 18 done (100.00%)
+0:03 [20K rows, 0B] [7.26K rows/s, 0B/s]
+```
+
+The MongoDB can be directly queried through Presto using SQL-like syntax.
+
+```
+presto> select count(*) from mongodb.fhir.immunizations;
+ _col0
+-------
+ 13189
+(1 row)
+
+Query 20190425_115119_00013_45fmg, FINISHED, 1 node
+Splits: 18 total, 18 done (100.00%)
+0:04 [13.2K rows, 901B] [3.4K rows/s, 232B/s]
+```
+
+With both databases available in the presto environment, we can perform queries
+across both platforms.
+
+```
+WITH a AS (SELECT variant_id, patient_id FROM mysql.var_db.calls), b AS (SELECT code.text, subject.referenceid FROM mongodb.fhir.conditions), c AS (SELECT variant_id, chrom, start, ref, alt, gene, aa_change FROM mysql.var_db.variants), d AS (SELECT a.*, b.* FROM a JOIN b ON a.patient_id = b.referenceid) SELECT c.*, d.* FROM d JOIN c ON d.variant_id = c.variant_id;
+```
