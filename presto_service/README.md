@@ -19,7 +19,17 @@ docker-compose up
 ```
 
 Additional steps are required to get the data into each of the MySQL and MongoDB
-databases.  See the README in the parent directory of this repository.
+databases.  See the README in the parent directory of this repository.  Note
+that a change to the mongodb dump archive was performed to remove problematic
+nested documents in the allergyintolerances, medicationrequests, patients, and
+procedures collections in the fhir database.  The user should run mongorestore
+on the "fixed" file:
+
+```
+cd data/ingest
+tar xvfz mongodb_fhir_dump_fix.tgz
+mongorestore dump
+```
 
 
 
@@ -71,4 +81,21 @@ across both platforms.
 
 ```
 WITH a AS (SELECT variant_id, patient_id FROM mysql.var_db.calls), b AS (SELECT code.text, subject.referenceid FROM mongodb.fhir.conditions), c AS (SELECT variant_id, chrom, start, ref, alt, gene, aa_change FROM mysql.var_db.variants), d AS (SELECT a.*, b.* FROM a JOIN b ON a.patient_id = b.referenceid) SELECT c.*, d.* FROM d JOIN c ON d.variant_id = c.variant_id;
+
+ variant_id | chrom |  start   |          ref          |     alt     | gene | aa_change | variant_id |        patient_id        |                  text                   |       referenceid
+------------+-------+----------+-----------------------+-------------+------+-----------+------------+--------------------------+-----------------------------------------+--------------------------
+      18875 | 21    | 40497889 | T                     | C           | NULL | NULL      |      18875 | 5c8518d9e24090000107787f | Overlapping malignant neoplasm of colon | 5c8518d9e24090000107787f
+      18875 | 21    | 40497889 | T                     | C           | NULL | NULL      |      18875 | 5c8518d9e24090000107787f | Recurrent rectal polyp                  | 5c8518d9e24090000107787f
+      18875 | 21    | 40497889 | T                     | C           | NULL | NULL      |      18875 | 5c8518d9e24090000107787f | Polyp of colon                          | 5c8518d9e24090000107787f
+      18875 | 21    | 40497889 | T                     | C           | NULL | NULL      |      18875 | 5c8518d9e24090000107787f | Acute viral pharyngitis (disorder)      | 5c8518d9e24090000107787f
+      18875 | 21    | 40497889 | T                     | C           | NULL | NULL      |      18875 | 5c8518d9e24090000107787f | Acute viral pharyngitis (disorder)      | 5c8518d9e24090000107787f
+      18875 | 21    | 40497889 | T                     | C           | NULL | NULL      |      18875 | 5c8518d9e24090000107787f | Viral sinusitis (disorder)              | 5c8518d9e24090000107787f
+      18875 | 21    | 40497889 | T                     | C           | NULL | NULL      |      18875 | 5c8518d9e24090000107787f | Osteoporosis (disorder)                 | 5c8518d9e24090000107787f
+      18875 | 21    | 40497889 | T                     | C           | NULL | NULL      |      18875 | 5c8518d9e24090000107787f | Polyp of colon                          | 5c8518d9e24090000107787f
+      18875 | 21    | 40497889 | T                     | C           | NULL | NULL      |      18875 | 5c8518d9e24090000107787f | Prediabetes                             | 5c8518d9e24090000107787f
+      18875 | 21    | 40497889 | T                     | C           | NULL | NULL      |      18875 | 5c8518d9e24090000107787f | Epilepsy                                | 5c8518d9e24090000107787f
+      18875 | 21    | 40497889 | T                     | C           | NULL | NULL      |      18875 | 5c8518d9e24090000107787f | History of single seizure (situation)   | 5c8518d9e24090000107787f
+      18875 | 21    | 40497889 | T                     | C           | NULL | NULL      |      18875 | 5c8518d9e24090000107787f | Seizure disorder                        | 5c8518d9e24090000107787f
+      18879 | 21    | 40499423 | G                     | T           | NULL | NULL      |      18879 | 5c8518d9e24090000107787f | Osteoarthritis of hip                   | 5c8518d9e24090000107787f
+      18879 | 21    | 40499423 | G                     | T           | NULL | NULL      |      18879 | 5c8518d9e24090000107787f | Overlapping malignant neoplasm of colon | 5c8518d9e24090000107787f
 ```
