@@ -36,6 +36,18 @@ services:
       - mongo
       - mysql
 
+  prestoapp:
+    container_name: prestoapp
+    build: ./presto_service
+    ports:
+      - "8080:8080"
+    links:
+      - mongo
+      - mysql
+    depends_on:
+      - mongo
+      - mysql
+
   admin-mongo:
     image: 0x59/admin-mongo:latest
     ports:
